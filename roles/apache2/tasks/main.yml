@@ -1,4 +1,7 @@
 ---
+- name: install setfacl support
+  become: yes
+  apt: pkg=acl
 - name: apache2 | install
   apt: name=apache2 state=present
   tags: install
@@ -13,3 +16,14 @@
   apache2_module: name=rewrite state=present
   notify: restart apache
   tags: enable_rewrite
+- name: export global variable HTTPDUSER
+  shell: >
+   HTTPDUSER=`ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1`
+- name: setfacl -R -m
+  become_user: root
+  shell: >
+   setfacl -R -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var
+- name:
+  become_user: root
+  shell: > setfacl -dR -m
+   setfacl -dR -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var
