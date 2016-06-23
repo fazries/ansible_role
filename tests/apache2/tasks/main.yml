@@ -1,0 +1,15 @@
+---
+- name: apache2 | install
+  apt: name=apache2 state=present
+  tags: install
+- name: curl | install
+  apt: name=curl state=present
+  tags: curl_install
+- name: disable default site on host
+  shell: >
+   cd /etc/apache2/sites-available/ && a2dissite 000-default.conf
+  tags: disable_default_host
+- name: enable a2enmod for rewrite
+  apache2_module: name=rewrite state=present
+  notify: restart apache
+  tags: enable_rewrite

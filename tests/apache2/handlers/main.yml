@@ -1,0 +1,6 @@
+---
+- name: start apache
+  service: name=apache2 state=started enabled=yes
+- name: restart apache
+  service: name=apache2 state=restarted
+  tags: apache_restart
