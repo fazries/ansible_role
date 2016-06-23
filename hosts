@@ -1,0 +1,23 @@
+[local]
+localhost
+
+[webserver]
+54.169.173.194 ansible_ssh_private_key_file=~/.ssh/snapcart/snapcart-dev.pem ansible_ssh_user=ubuntu
+
+[production]
+
+[staging]
+54.169.128.203 ansible_ssh_private_key_file=~/.ssh/snapcart/snapcart-dev.pem ansible_ssh_user=ubuntu
+
+[development]
+
+[api]
+
+[api-ph]
+
+[dashboard]
+
+[dashboard-ph]
+
+[newhost]
+54.169.159.52 ansible_ssh_private_key_file=~/.ssh/snapcart/snapcart-dev.pem ansible_ssh_user=ubuntu

@@ -1,0 +1,7 @@
+---
+ - hosts: newhost 
+   #gather_facts: false
+   gather_facts: true
+   sudo: yes
+   roles: 
+    - "{{ type }}"

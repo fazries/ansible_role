@@ -1,0 +1,17 @@
+# Author: Allan Denot
+# ref: https://github.com/adenot/blog-ansible-provision-ec2.git
+# Modified: Fazrie
+
+# This script only use for create an ec2 instance based on snapcart_ec2_var
+# production,staging,development
+# usage: ansible-playbook -vv -i localhost, -e "type=production" provision-ec2.yml
+---
+ - hosts: localhost
+   connection: local
+   gather_facts: false
+   #gather_facts: true
+   user: root
+   pre_tasks:
+    - include_vars: snapcart_ec2_vars/{{type}}.yml
+   roles:
+    - provision-ec2 
