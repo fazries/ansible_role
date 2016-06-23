@@ -1,0 +1,17 @@
+galaxy_info:
+  author: Setyadi Fazrie
+  description: An Ansible role for installing Ocropy.
+  company: Snapcart Digital Indonesia
+  license: Apache
+  min_ansible_version: 1.2
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  categories:
+  - cloud
+  - system
+dependencies:
+  - { role: "apt" }
+  - { role: "python" }
+  - { role: "git" }

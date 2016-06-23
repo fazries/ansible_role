@@ -1,0 +1,5 @@
+---
+- name: composer | install
+  shell: >
+   cd {{ composer_install_dir }} && curl -sS {{ composer_get_url }} | sudo php -- --install-dir={{ composer_bin_dir }} --filename=composer
+  tags: install

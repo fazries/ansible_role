@@ -1,0 +1,84 @@
+---
+# Add linux mint repository as dependencies
+- name: add linuxmint repos
+  apt_repository: repo='deb http://packages.linuxmint.com debian import' state=present
+  tags: 
+   - mint_repos
+
+- name: check for gpg public key  
+  #sudo: true  
+  shell: gpg --list-keys | grep "Clement Lefebvre" 
+  register: find_gpg_public_key  
+  always_run: true  
+  failed_when: find_gpg_public_key.rc > 1
+ 
+- name: Create gpg public key  
+  #sudo: true
+  command: gpg --keyserver pgp.mit.edu --recv-keys 3EE67F3D0FF405B2  
+  when: find_gpg_public_key.rc == 1
+ 
+- name: Export gpg public key  
+  #sudo: true
+  command: gpg --export 3EE67F3D0FF405B2 > 3EE67F3D0FF405B2.gpg  
+  when: find_gpg_public_key.rc == 1
+
+- name: Import gpg public key 
+  #sudo: true
+  command: apt-key add ./3EE67F3D0FF405B2.gpg
+  when: find_gpg_public_key == 1
+
+- name: Delete temp file for gpg public key  
+  #sudo: true
+  file: path=3EE67F3D0FF405B2.gpg  state=absent
+  when: find_gpg_public_key.rc == 1  
+  always_run: true  
+
+#- name: remove gpg keys
+#  shell: >
+#   gpg --batch --yes --delete-key "Clement Lefebvre (Linux Mint Package Repository v1) <root@linuxmint.com>" 
+#  tags: 
+#   - mint_removegpgkeys
+#- name: add gpg key linuxmint repos
+#  shell: > 
+#   gpg --keyserver pgp.mit.edu --recv-keys 3EE67F3D0FF405B2 && gpg --export 3EE67F3D0FF405B2 > 3EE67F3D0FF405B2.gpg && apt-key add ./3EE67F3D0FF405B2.gpg && rm ./3EE67F3D0FF405B2.gpg
+#  tags: 
+#   - mint_addgpgkeys
+- name: ocropy dependencies | firefox
+  apt: name=firefox state=present
+
+- name: check for git repository
+  sudo: true  
+  shell: ls {{ ocropy_install_dir}}{{ repo }} | grep setup.py
+  register: find_git_repos
+  always_run: true  
+  failed_when: "'setup.py' in find_git_repos.stderr"
+
+- name: ocropy dir | create
+  file: path={{ ocropy_install_dir}}{{ repo }} state=directory
+  when: find_git_repos.stdout == "" 
+
+- name: ocropy git | clone
+  git: repo={{ ocropy_git_url }}{{ repo }}.git dest={{ ocropy_install_dir }}{{ repo }}
+   accept_hostkey=yes
+   force=yes
+   recursive=no
+   key_file={{ ocropy_install_dir }}{{ repo }}/.ssh/id_rsa.github-{{ repo }}
+  when: find_git_repos.stdout == ""  
+
+- name: ocropy dependencies | install all package deps
+  shell: >
+   cd {{ ocropy_install_dir }}{{ repo }} && apt-get install $(cat PACKAGES) -y
+  when: find_git_repos.stdout == ""  
+
+- name: ocropy models | download
+  get_url: url={{ item }} dest={{ ocropy_install_dir }}{{ repo }}/models
+  with_items:
+  - http://www.tmbdev.net/en-default.pyrnn.gz
+  when: find_git_repos.stdout == "" 
+  
+- name: python-Levenshtein fuzzywuzzy | install
+  pip: name={{ item }}
+  with_items:
+  - python-Levenshtein
+  - fuzzywuzzy
+  when: find_git_repos.stdout == "" 

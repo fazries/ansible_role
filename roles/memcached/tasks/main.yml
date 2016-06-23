@@ -1,0 +1,11 @@
+---
+- name: memcached | install
+  apt: name=memcached state=present
+
+- name: changes memcached port
+  lineinfile: dest=/etc/memcached.conf regexp=^-p line="-p 11212"
+  notify: restart memcached
+  
+- name: force restart memcached
+  shell: >
+   /etc/init.d/memcached restart  

@@ -1,0 +1,20 @@
+---
+- name: add repo php7.0
+  shell: >
+   LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
+  tags: repo_install
+- name: apt get update
+  apt: update_cache=yes
+- name: php7.0 | install
+  apt: name={{ item }} state=present
+  with_items:
+  - php-xml
+  - php7.0 
+  - php7.0-zip
+  - php7.0-pgsql
+  - php7.0-mysql
+  tags: php7_install
+- name: mod php7.0 | enable
+  apache2_module: state=present name=php7.0
+#  notify: restart apache
+  tags: enable_php7_mod

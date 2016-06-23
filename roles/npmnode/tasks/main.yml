@@ -1,0 +1,28 @@
+---
+- name: npm | install
+  apt: name=npm state=present
+  tags: npm_install
+- name: set nmp global node_modules
+  shell: >
+   npm config set prefix /usr/
+#   npm config set prefix /usr/lib/node_modules
+- name: nodejs | install
+  apt: name=nodejs state=present
+- name: bower | install
+  #npm: name=bower global=yes state=latest
+  shell: >
+   npm install -g bower
+  tags: bower_install
+- name: less | install
+  shell: >
+   npm install -g less  
+- name: nodejs symlink
+  file:
+   src: "/usr/bin/nodejs"
+   dest: "/usr/bin/node"
+   state: link
+  tags: nodejs_symlink
+  #notify: restart apache
+- name: export path
+  shell: >
+   export PATH="/usr/lib/node_modules/bin:$PATH"  

@@ -1,0 +1,12 @@
+---
+- name: ocropy python deps | install
+  apt: name={{ item }} state=present
+  with_items:
+  - python
+  - python-numpy
+  - python-scipy
+  - python-matplotlib
+  tags: ocropy_dependencies
+- name: python-pip | install
+  apt: name=python-pip state=present
+  tags: pip_install

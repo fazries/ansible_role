@@ -1,0 +1,3 @@
+---
+ - name: ruby
+   apt: name=ruby state=present

@@ -1,0 +1,3 @@
+---
+- name: cron | install
+  apt: name=cron state=present

@@ -1,0 +1,7 @@
+---
+#apiprod: /var/www/api
+#apistag: /var/www/api-stag
+#apidev: /var/www/api-dev
+#dashboardprod: /var/www/dashboard
+#dashboardstag: /var/www/dashboard-stag
+#dashboarddev: /var/www/dashboard-dev

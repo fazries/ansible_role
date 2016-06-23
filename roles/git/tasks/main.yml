@@ -1,0 +1,28 @@
+---
+- name: git | install
+  apt: name=git state=present
+  tags: install
+#- name: api production update
+#  shell: >
+#   cd {{ apiprod }} && git checkout master && git pull origin master
+#  tags: api_prod_update
+#- name: api staging update
+#  shell: >
+#   cd {{ apistag }} && git checkout master && git pull origin master
+#  tags: api_staging_update
+#- name: api development update
+#  shell: >
+#   cd {{ apidev }} && git checkout dev && git pull origin dev
+#  tags: api_dev_update
+#- name: dashboard prod update
+#  shell: >
+#   cd {{ dashboardprod }} && git checkout master && git pull origin master
+#  tags: dashboard_prod_update
+#- name: dashboard staging update
+#  shell: >
+#   cd {{ dashboardstag }} && git checkout master && git pull origin master
+#  tags: dashboard_staging_update
+#- name: dashboard dev update
+#  shell: >
+#   cd {{ dashboarddev }} && git checkout dev && git pull origin dev
+#  tags: dashboard_dev_update
