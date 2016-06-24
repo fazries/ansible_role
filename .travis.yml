@@ -1,19 +1,14 @@
----
 language: python
-python: "2.7"
-
+python: '2.7'
 before_install:
-  # Make sure everything's up to date.
-  - sudo apt-get update -qq
-
+- sudo apt-get update -qq
 install:
-  # Install Ansible.
-  - pip install ansible
-
-  # Add ansible.cfg to pick up roles path.
-  #- "printf '[defaults]\nroles_path = ../' > ansible.cfg"
-
+- pip install ansible
 script:
-  # We'll add some commands to test the role here.
-  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
-
+- ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+after_success:
+  - "openssl aes-256-cbc -k $DEPLOY_KEY -in config/deploy_id_rsa_enc_travis -d -a -out config/deploy_id_rsa"
+  - "bundle exec cap deploy"
+env:
+  global:
+    secure: ON1tvdKFo7hTBRc9V2sPJXDY5mqeIpfPargeIRbprvgxzngyrWKBD4E1asQxgJx1K9IoIIAMjr70PQUIiynw2XWcttaQVy5V5TtMBKmHr9WjgiTmGGRSesOtLIoAVtMm6V8SWPEsbAq74JC9NNKy4EpsRoZWiMn+oRnYxtsnk99hh44gd//mdFm+1mHmUNws44eMWNX+ZVkxEpZDdwnyJn72SAmsUi+HJLxlZW3RERyXC/lL48GggRtspU8H8INW26+03tGR0q4k5HmJ0p2jiisPhLMJE3zNkIO3KWZCN1PJmljlXn9BekhZTsB5TGszS3ujaYTjsuCtw7Xj4oTGKNZwomclFPVE3e9kY3/umop14pU07qxCyUTwLcWka4fz50Gkl5pylUW6dRzUO7+McsippZwoP/iYy04FGV7bluXWcs+/ojRbh2AZFkT7YpxVYa+iGOyGw/CEaXvDZp0/5Op/TEEI2aKL05SHrcAAp97sFatkG1F54ofIzKF3LrHND65vbcK6edXiDwuWz0g2dw//fSPqXHszdsz5H2ZWrLzfZlrnu02jmxu7HGMZUbr1ZcGNYZ6rgpUv/E9/05lpwLMmoi3FLer2F9iHQM0rdiicAVIekn0rn9Z5I0GaIyvgIwWBg8MNJU5+sOeWWToFBq8rfBXFfJIAZhbfWMc/WqQ=
