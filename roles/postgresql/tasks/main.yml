@@ -12,7 +12,7 @@
 - name: Ensure the PostgreSQL service is running 
   service: name=postgresql state=started enabled=yes
   tags: install
-- name: database snapcart_kazbek | create
+- name: database  | create
   become: true
   become_user: postgres
   #postgresql_db: name:{{ database_name }} state=present
