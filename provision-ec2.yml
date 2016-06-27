@@ -4,7 +4,7 @@
 
 # This script only use for create an ec2 instance based on snapcart_ec2_var
 # production,staging,development
-# usage: ansible-playbook -vv -i localhost, -e "type=production" provision-ec2.yml
+# usage: ansible-playbook -vv -i localhost, -e "env=production" -e "apps=webserver"  provision-ec2.yml
 ---
  - hosts: localhost
    connection: local
@@ -12,6 +12,6 @@
    #gather_facts: true
    user: root
    pre_tasks:
-    - include_vars: snapcart_ec2_vars/{{type}}.yml
+    - include_vars: inventory/{{ env }}.yml
    roles:
-    - provision-ec2 
+    - { role: "{{ apps }}" }
